@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace baitapvonglap_bai3_OOP
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            char traloi;
+            int n;
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.WriteLine("Chương trình tìm số lẻ nhỏ hơn n \n");
+
+            bool tieptucchuongtrinh = true;
+            while (tieptucchuongtrinh)
+            {
+                do
+                {
+                    Console.Write("nhập n: ");
+                    n = int.Parse(Console.ReadLine());
+                    if (n < 0)
+                    {
+                        Console.WriteLine("nhập sai!");
+                    }
+                } while (n < 0);
+
+                if (n > 0)
+                    {
+                        Console.Write("các số lẻ nhỏ hơn n là: ");
+                        for (int i = 1; i <= n; i = i + 2)
+                        {
+                            if (i % 2 != 0)
+                            {
+                                Console.Write("{0,5}", i);
+                            }    
+                        }
+                        Console.WriteLine();
+                    }
+                
+                Console.Write("bạn có muốn tiếp tục chạy chương trình nữa không (y/n): ");
+                traloi = char.Parse(Console.ReadLine());
+                if (traloi != 'y')
+                {
+                    tieptucchuongtrinh = false;
+                    Console.WriteLine("kết thúc chương trình");
+                }
+            }
+            Console.ReadKey();
+        }
+    }
+}
