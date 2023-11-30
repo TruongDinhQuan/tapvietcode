@@ -1,0 +1,27 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace baitapvonglap_bai2_OOP
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int n, sum;
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.WriteLine("Chương trình tìm n nhỏ nhất để tổng 1+2+3...n < 10000 \n");
+            n = 0;  
+            sum = 0;
+            while (sum <= 10000)
+            {
+                sum = sum + n;
+                n++;
+            }
+            Console.Write("số n cần tìm là: {0}", n);
+            Console.ReadKey();
+        }
+    }
+}
