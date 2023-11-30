@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace baitapvonglap_bai_1_OOP
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            char traloi;
+            int n, tong;
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.WriteLine("Chương trình tính tổng từ 1 đến n \n");
+
+            bool tieptucchuongtrinh = true;
+            while (tieptucchuongtrinh)
+            {
+                do
+                {
+                    Console.Write("nhập n: ");
+                    n = int.Parse(Console.ReadLine());
+                    if (n < 0)
+                    {
+                        Console.WriteLine("nhập sai!");
+                    }
+
+                } while (n < 0);
+
+                if (n > 0)
+                {
+                        tong = 0;
+                        for (int i = 1; i <= n; i++)
+                        {
+                            tong = tong + i;
+                        }
+                        Console.WriteLine("tổng từ 1 đến {0} là: {1}", n, tong);
+                }
+
+                Console.Write("bạn có muốn tiếp tục chạy chương trình nữa không (y/n): ");
+                traloi = char.Parse(Console.ReadLine());
+                if (traloi !='y')
+                {
+                    tieptucchuongtrinh = false;
+                    Console.WriteLine("kết thúc chương trình");
+                }
+            }
+            Console.ReadKey();
+        }
+    }
+}
