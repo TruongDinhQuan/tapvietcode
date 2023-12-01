@@ -1,0 +1,36 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace baitapvonglap_bai4_OOP
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            int soga, socho, tongsochan, tongsogavacho;
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.WriteLine("Chương trình tìm số gà và số chó \n");
+
+            soga = 0;
+            tongsochan = 100;
+            tongsogavacho = 36;
+            socho = 0;
+
+                while (soga <= 36)
+                {
+                     soga++;
+                     socho = tongsogavacho - soga;
+                    if ((soga * 2 + socho * 4) == tongsochan)
+                    {
+                    Console.WriteLine("số gà là {0} và số chó là {1}", soga, socho);
+                    }    
+                }
+
+            Console.ReadKey();
+        }
+    }
+}
