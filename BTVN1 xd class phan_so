@@ -1,0 +1,188 @@
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BTVN1_xd_lop_phanso
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            // định dạng tiếng việt
+            Console.OutputEncoding = Encoding.UTF8;
+
+            //nhập phân số thứ 1
+            Console.Write("Nhập tử số thứ nhất: ");
+            int tuso1 = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Nhập mẫu số thứ nhất: ");
+            int mauso1 = Convert.ToInt32(Console.ReadLine());
+            while (mauso1 == 0)
+            {
+                Console.Write("Mẫu số không thể bằng 0. Hãy nhập lại mẫu số: ");
+                mauso1 = Convert.ToInt32(Console.ReadLine());
+            }
+
+            // nhập phân số thứ 2
+            Console.Write("Nhập tử số thứ hai: ");
+            int tuso2 = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Nhập mẫu số thứ nhất: ");
+            int mauso2 = Convert.ToInt32(Console.ReadLine());
+            while (mauso2 == 0)
+            {
+                Console.Write("Mẫu số không thể bằng 0. Hãy nhập lại mẫu số: ");
+                mauso2 = Convert.ToInt32(Console.ReadLine());
+            }
+            // tạo đối tượng ps1
+            PhanSo ps1 = new PhanSo(tuso1, mauso1);
+            // tạo đối tượng ps2
+            PhanSo ps2 = new PhanSo(tuso2, mauso2);
+            Console.Write("Phân số thứ nhất: ");
+            ps1.InPhanSo();
+            Console.Write("Phân số thứ hai: ");
+            ps2.InPhanSo();
+            // rút gọn ps1
+            Console.Write("Phân số sau khi rút gọn của phân số 1: ");
+            Console.WriteLine(ps1.RutGonPhanSo());
+            // rút gọn ps2
+            Console.Write("Phân số sau khi rút gọn của phân số 2:");
+            Console.WriteLine(ps2.RutGonPhanSo());
+
+            // in ra UCLN của ps1
+            int ucln1 = ps1.TimUCLN(tuso1, mauso1);
+            Console.WriteLine($"UCLN: {ucln1}");
+            // in ra UCLN của ps2
+            int ucln2 = ps1.TimUCLN(tuso2, mauso2);
+            Console.WriteLine($"UCLN: {ucln2}");
+            // in BCNN của mauso của ps1 và mauso của ps2
+            int bcnn = ps1.TimBCNN(mauso1, mauso2);
+            Console.WriteLine($"BCNN: {bcnn}");
+
+            // Xuất kết quả phép toán cộng
+            PhanSo tong = ps1.Cong(ps2);
+            Console.Write("Tổng hai phân số:");
+            tong.InPhanSo();
+            // Xuất kết quả phép toán trừ
+            PhanSo hieu = ps1.Tru(ps2);
+            Console.Write("Hiệu hai phân số:");
+            hieu.InPhanSo();
+            // Xuất kết quả phép toán nhân
+            PhanSo tich = ps1.Tru(ps2);
+            Console.Write("Tích hai phân số:");
+            tich.InPhanSo();
+            // Xuất kết quả phép toán chia
+            PhanSo thuong = ps1.Tru(ps2);
+            Console.Write("Thương hai phân số:");
+            thuong.InPhanSo();
+
+            Console.ReadKey();
+        }
+
+        class PhanSo
+        {
+            public int tuso;
+            public int mauso;
+
+            public PhanSo() // tạo hàm khởi dựng
+            {
+                tuso = 0;
+                mauso = 1;
+            }
+
+           public PhanSo(int tuso, int mauso) // là hàm khởi dựng nhân các giá trị đầu vào
+            {
+                this.tuso = tuso;
+                while (mauso == 0)
+                {
+                    Console.WriteLine("Mẫu số không thể bằng 0. Hãy nhập lại mẫu số:");
+                    mauso = Convert.ToInt32(Console.ReadLine());
+                }
+                this.mauso = mauso;
+
+            }
+
+            public void InPhanSo() // hàm in phân số 
+            {
+               Console.WriteLine($"{tuso}/{mauso}");
+                
+            }
+
+            public string RutGonPhanSo()
+            {
+                int ucln = TimUCLN(Math.Abs(tuso), Math.Abs(mauso));
+                tuso /= ucln;
+                mauso /= ucln;
+                if (mauso < 0)
+                {
+                    tuso = -tuso;
+                    mauso = -mauso;
+                }
+                if (tuso == 0)
+                {
+                    return "0";
+                }
+                else if (mauso == 1)
+                {
+                    return $"{tuso}";
+                }
+                else
+                {
+                    return $"{tuso}/{mauso}";
+                }
+            }
+            public  int TimUCLN(int a, int b)
+            {
+                a = Math.Abs(a);
+                b = Math.Abs(b);
+                while (b != 0)
+                {
+                    int temp = b;
+                    b = a % b;
+                    a = temp;
+                }
+                return a;
+            }
+
+            public int TimBCNN(int a, int b)
+            {
+                return a * b / TimUCLN(a, b);
+            }
+
+            public PhanSo Cong(PhanSo ps2)
+            {
+                int newTuso = this.tuso * ps2.mauso + ps2.tuso * this.mauso;
+                int newMauso = this.mauso * ps2.mauso;
+                PhanSo ketQua = new PhanSo(newTuso, newMauso);
+                return ketQua;
+            }
+
+            public PhanSo Tru(PhanSo ps2)
+            {
+                int newTuso = this.tuso * ps2.mauso - ps2.tuso * this.mauso;
+                int newMauso = this.mauso * ps2.mauso;
+                PhanSo ketQua = new PhanSo(newTuso, newMauso);
+                return ketQua;
+            }
+
+            public PhanSo Nhan(PhanSo ps2)
+            {
+                int newTuso = this.tuso * ps2.tuso;
+                int newMauso = this.mauso * ps2.mauso;
+                PhanSo ketQua = new PhanSo(newTuso, newMauso);
+                return ketQua;
+            }
+
+            public PhanSo Chia(PhanSo ps2)
+            {
+                int newTuso = this.tuso * ps2.mauso;
+                int newMauso = this.mauso * ps2.tuso;
+                PhanSo ketQua = new PhanSo(newTuso, newMauso);
+                return ketQua;
+            }
+        }
+    }
+}
