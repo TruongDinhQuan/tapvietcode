@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Security.Permissions;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,64 +22,94 @@ namespace BTVN1_xd_lop_phanso
             LC = int.Parse(Console.ReadLine()); 
             return LC;
         }
+        static PhanSo pst1, pst2;
         static void Main()
         {
             bool continueChoosing = true;
 
-            while (continueChoosing)
-            {
-                int LC = luachon();
-                switch (LC)
-                {
-                    case 1:
-                        PhanSo.Nhapphanso();
+             while (continueChoosing)
+             {
+                 int LC = luachon();
+
+                 switch (LC)
+                 {
+                     case 1:
+                        Console.WriteLine("\n");
+                        pst1 = PhanSo.Nhapps1();
+                        pst2 = PhanSo.Nhapps2();
+                         Console.WriteLine("\n");
+                         break;
+                     case 2:
+                        Console.WriteLine("\n");
+                        Console.Write("Phân số thứ nhất:  ");
+                            pst1.InPhanSo(); 
+                        Console.Write("Phân số thứ hai:  ");
+                            pst2.InPhanSo();
+                         Console.WriteLine("\n");
+                         break;
+                     case 3:
+                        Console.WriteLine("\n");
+                            PhanSo.RutGon(pst1);
+                        pst1.Inthdb();
+
+                            PhanSo.RutGon(pst2);
+                        pst2.Inthdb();
                         Console.WriteLine("\n");
                         break;
-                    case 2:
-                        PhanSo.hienthiphanso();
+                     case 4:
                         Console.WriteLine("\n");
-                        break;
-                    case 3:
-                        PhanSo.hienthiUCLN();
+                        Console.Write("UCLN của ps1: ");
+                          PhanSo.htUCLN(pst1);
+                        Console.Write("UCLN của ps2: ");
+                          PhanSo.htUCLN(pst2);
+                         Console.WriteLine("\n");
+                         break;
+                     case 5:
                         Console.WriteLine("\n");
-                        break;
-                    case 4:
-                        PhanSo.hienthiohamrutgon();
+                            PhanSo.htBCNN(pst1,pst2);
                         Console.WriteLine("\n");
-                        break;
-                    case 5:
-                        PhanSo.hienthiBCNN();
+                         break;
+                     case 6:
                         Console.WriteLine("\n");
-                        break;
-                    case 6:
-                        PhanSo.hienthicong();
+                            PhanSo cong = PhanSo.cong(pst1, pst2);
+                            PhanSo.RutGon(cong);
+                            cong.Inthdb();
                         Console.WriteLine("\n");
-                        break;
-                    case 7:
-                        PhanSo.hienthitru();
+                         break;
+                     case 7:
                         Console.WriteLine("\n");
-                        break;
-                    case 8:
-                        PhanSo.hienthinhan();
+                            PhanSo tru = PhanSo.tru(pst1, pst2);
+                            PhanSo.RutGon(tru);
+                            tru.Inthdb();
                         Console.WriteLine("\n");
-                        break;
-                    case 9:
-                        PhanSo.hienthichia();
+                         break;
+                     case 8:
                         Console.WriteLine("\n");
-                        break;
-                    case 10:
-                        Environment.Exit(0);
-                        break;
-                }
-            }
-            Program.luachon();
+                            PhanSo nhan = PhanSo.nhan(pst1, pst2);
+                            PhanSo.RutGon(nhan);
+                            nhan.Inthdb();
+                        Console.WriteLine("\n");
+                         break;
+                     case 9:
+                        Console.WriteLine("\n");
+                            PhanSo chia = PhanSo.chia(pst1, pst2);
+                            PhanSo.RutGon(chia);
+                            chia.Inthdb();
+                        Console.WriteLine("\n");
+                         break;
+                     case 10:
+                         Environment.Exit(0);
+                         break;
+                 }
+             }
+             Program.luachon();
             Console.ReadKey();
         }
         
         class PhanSo
         {
-             int tuso;
-             int mauso;
+              int tuso;
+              int mauso;
        
             public PhanSo() // tạo hàm khởi dựng
             {
@@ -97,8 +131,8 @@ namespace BTVN1_xd_lop_phanso
                 Console.WriteLine("----------------Menu-----------------------------");
                 Console.WriteLine("1.   Thêm phân số mới vào danh sách--------------");
                 Console.WriteLine("2.   Hiển thị danh sách phân số------------------");
-                Console.WriteLine("3.   Tìm UCLN------------------------------------");
-                Console.WriteLine("4.   Làm đẹp các phân số-------------------------");
+                Console.WriteLine("3.   Làm đẹp các phân số-------------------------");
+                Console.WriteLine("4.   Tìm UCLN------------------------------------");
                 Console.WriteLine("5.   Tìm BCNN------------------------------------");
                 Console.WriteLine("6.   Thực hiện phép cộng hai phân số-------------");
                 Console.WriteLine("7.   Thực hiện phép trừ hai phân số--------------");
@@ -108,224 +142,150 @@ namespace BTVN1_xd_lop_phanso
                 Console.WriteLine("------------------------Hết----------------------");
                 Console.Write("Mời bạn chọn thao tác: ");
             }
-     
-            static int tuso1, mauso1, tuso2, mauso2; // tạo ra biến toàn cục 
-            public static void Nhapphanso()
+            public static PhanSo Nhapps1()
             {
-                Console.WriteLine();
-                //nhập phân số thứ 1
-                Console.Write("Nhập tử số thứ nhất: ");
-                 tuso1 = Convert.ToInt32(Console.ReadLine());
-
-                Console.Write("Nhập mẫu số thứ nhất: ");
-                 mauso1 = Convert.ToInt32(Console.ReadLine());
-                while (mauso1 == 0)
+                PhanSo Ps1 = new PhanSo();
+                Console.Write("Nhập tử số của phân số 1:  ");
+                Ps1.tuso = int.Parse(Console.ReadLine());
+                do
                 {
-                    Console.Write("Mẫu số không thể bằng 0. Hãy nhập lại mẫu số: ");
-                    mauso1 = Convert.ToInt32(Console.ReadLine());
-                }
-
-                // nhập phân số thứ 2
-                Console.Write("Nhập tử số thứ hai: ");
-                 tuso2 = Convert.ToInt32(Console.ReadLine());
-
-                Console.Write("Nhập mẫu số thứ nhất: ");
-                 mauso2 = Convert.ToInt32(Console.ReadLine());
-                while (mauso2 == 0)
+                    Console.Write("Nhập mẫu số của phân số 1: ");
+                    Ps1.mauso = int.Parse(Console.ReadLine());
+                } while (Ps1.mauso == 0);
+                return Ps1;
+            }
+            public static PhanSo Nhapps2()
+            {
+                PhanSo Ps2 = new PhanSo();
+                Console.Write("Nhập tử số của phân số 2:  ");
+                Ps2.tuso = int.Parse(Console.ReadLine());
+                do
                 {
-                    Console.Write("Mẫu số không thể bằng 0. Hãy nhập lại mẫu số: ");
-                    mauso2 = Convert.ToInt32(Console.ReadLine());
-                }
+                    Console.Write("Nhập mẫu số của phân số 2: ");
+                    Ps2.mauso = int.Parse(Console.ReadLine());
+                } while (Ps2.mauso == 0);
+                return Ps2;
             }
-            public static void hienthiphanso()
+            public void InPhanSo()
             {
-                Console.WriteLine();
-                // tạo đối tượng ps1
-                PhanSo ps11 = new PhanSo(tuso1, mauso1);
-                // tạo đối tượng ps2
-                PhanSo ps22 = new PhanSo(tuso2, mauso2);
-                Console.Write("Phân số thứ nhất bạn vừa nhập: ");
-                ps11.InPhanSo();
-                Console.Write("Phân số thứ hai bạn vùa nhập: ");
-                ps22.InPhanSo();
-            }
-            public void InPhanSo() // hàm in phân số 
-            {
-               Console.WriteLine($"{tuso}/{mauso}");
+                     Console.Write("{0}/{1} \n", tuso, mauso);
                 
             }
-
-            public static void hienthiohamrutgon()
-            {
-                Console.WriteLine();
-                // tạo đối tượng ps1
-                PhanSo ps1 = new PhanSo(tuso1, mauso1);
-                // tạo đối tượng ps2
-                PhanSo ps2 = new PhanSo(tuso2, mauso2);
-                // rút gọn ps1
-                Console.Write("Phân số sau khi rút gọn của phân số 1: ");
-                Console.WriteLine(ps1.RutGonPhanSo());
-                // rút gọn ps2
-                Console.Write("Phân số sau khi rút gọn của phân số 2:");
-                Console.WriteLine(ps2.RutGonPhanSo());
-            }
-           
-            public  string RutGonPhanSo()
-            {
-                int ucln = TimUCLN(Math.Abs(tuso), Math.Abs(mauso));
-                tuso /= ucln;
-                mauso /= ucln;
-                if (mauso < 0)
-                {
-                    tuso = -tuso;
-                    mauso = -mauso;
-                }
-                if (tuso == 0)
-                {
-                    return "0";
-                }
-                else if (mauso == 1)
-                {
-                    return $"{tuso}";
-                }
-                else
-                {
-                    return $"{tuso}/{mauso}";
-                }
-            }
-            public static void hienthiUCLN()
-            {
-                Console.WriteLine();
-                // tạo đối tượng ps1
-                PhanSo ps111 = new PhanSo(tuso1, mauso1);
-                // tạo đối tượng ps2
-                PhanSo ps222 = new PhanSo(tuso2, mauso2);
-                // in ra UCLN của ps1
-                int ucln1 = ps111.TimUCLN(tuso1, mauso1);
-                Console.WriteLine($"UCLN của phân số 1: {ucln1}");
-                // in ra UCLN của ps2
-                int ucln2 = ps222.TimUCLN(tuso2, mauso2);
-                Console.WriteLine($"UCLN của phân số 2: {ucln2}");
-            }
-            public  int TimUCLN(int TS, int MS)
+            public static int UCLN(int TS, int MS)
             {
                 TS = Math.Abs(TS);
                 MS = Math.Abs(MS);
                 while (MS != 0)
                 {
-                    int temp = MS;
+                    int bien = MS;
                     MS = TS % MS;
-                    TS = temp;
+                    TS = bien;
                 }
                 return TS;
             }
-            public static void hienthiBCNN()
+
+            public static void htUCLN(PhanSo ps)
             {
-                Console.WriteLine();
-                PhanSo ps111 = new PhanSo(tuso1, mauso1);
-                PhanSo ps222 = new PhanSo(tuso2, mauso2);
-                int ucln1 = ps111.TimUCLN(tuso1, mauso1);
-                int ucln2 = ps222.TimUCLN(tuso2, mauso2);
+                int u = UCLN(ps.tuso, ps.mauso);
+                Console.Write(u + "\n");
+            }
+            public static int BCNN (int MS1, int MS2)
+            {
+                return MS1 * MS2 / UCLN(MS1,MS2);
+            }
+
+            public static void htBCNN(PhanSo Ps1, PhanSo Ps2)
+            {
                 int c, d;
-                if (mauso1 % ucln1 == 0)
+                if (Ps1.mauso % UCLN(Ps1.tuso,Ps1.mauso) == 0)
                 {
-                    c = mauso1 / ucln1;
-                    c = Math.Abs(c);
+                    c = Ps1.mauso / UCLN(Ps1.tuso, Ps1.mauso);
+                   // c = Math.Abs(c);
                 }
                 else
                 {
-                    c = mauso1;
+                    c = Ps1.mauso;
                 }
-                if (mauso2 % ucln2 == 0)
+                if (Ps2.mauso % UCLN(Ps2.tuso, Ps2.mauso) == 0)
                 {
-                    d = mauso2 / ucln2;
-                    d = Math.Abs(d);
+                    d = Ps2.mauso / UCLN(Ps2.tuso, Ps2.mauso);
+                   // d = Math.Abs(d);
                 }
                 else
                 {
-                    d = mauso2;
+                    d = Ps2.mauso;
                 }
-                // tạo đối tượng ps1
-                PhanSo ps12 = new PhanSo(c, d);
-                // in BCNN của mauso của ps1 và mauso của ps2
-                int bcnn = ps12.TimBCNN(c, d);
-                Console.WriteLine($"BCNN của hai phân số là: {bcnn}");
-            }
+                Console.WriteLine("BCNN của 2 phân số là: " + BCNN(c,d));
 
-            public int TimBCNN(int a, int b)
-            {
-                return a * b / TimUCLN(a, b);
             }
-            public static void hienthicong()
+            public static PhanSo RutGon(PhanSo ps)
             {
-                PhanSo ps11111 = new PhanSo(tuso1, mauso1);
-                PhanSo ps22222 = new PhanSo(tuso2, mauso2);
-                // Xuất kết quả phép toán cộng
-                PhanSo tong = ps11111.Cong(ps22222);
-                //int rutgontong = tong.RutGonPhanSo();
-                Console.Write("Tổng hai phân số:");
-                tong.InPhanSo();
+                int ucln = UCLN(ps.tuso, ps.mauso);// phải làm như vậy để tính ucln 1 lần
+                ps.tuso = ps.tuso / ucln;          // tránh tình trạng tuso = 1 số khác.
+                ps.mauso = ps.mauso / ucln;
+                if (ps.mauso < 0 || ps.tuso < 0 && ps.mauso < 0)
+                {
+                    ps.tuso = - ps.tuso;
+                    ps.mauso = - ps.mauso;
+                }    
+                return ps;
             }
-            public PhanSo Cong(PhanSo ps2)
+            public static int thdb(PhanSo ps)
             {
-                int newTuso = this.tuso * ps2.mauso + ps2.tuso * this.mauso;
-                int newMauso = this.mauso * ps2.mauso;
-                PhanSo ketQua = new PhanSo(newTuso, newMauso);
-                ketQua.RutGonPhanSo();
-                return ketQua;
+                if (ps.tuso == 0)
+                {
+                    return 0;
+                }
+                else if (ps.mauso == 1)
+                {
+                    return ps.tuso;
+                }
+                return 1;
             }
-
-            public PhanSo Tru(PhanSo ps2)
+            public void Inthdb()
             {
-                int newTuso = this.tuso * ps2.mauso - ps2.tuso * this.mauso;
-                int newMauso = this.mauso * ps2.mauso;
-                PhanSo ketQua = new PhanSo(newTuso, newMauso);
-                ketQua.RutGonPhanSo();
-                return ketQua;
+                if (tuso == 0)
+                {
+                    Console.WriteLine("Phân số sau khi đã xử lý hoặc đã tính toán: {0}", tuso);
+                }
+                else if (mauso == 1)
+                {
+                    Console.WriteLine("Phân số sau khi đã xử lý hoặc đã tính toán: {0}", tuso);
+                }
+                else
+                {
+                    Console.WriteLine("Phân số sau khi đã xử lý hoặc đã tính toán: {0}/{1}", tuso, mauso);
+                }
             }
-            public static void hienthitru()
+            public static PhanSo cong(PhanSo ps1, PhanSo ps2)
             {
-                PhanSo ps111111 = new PhanSo(tuso1, mauso1);
-                PhanSo ps222222 = new PhanSo(tuso2, mauso2);
-                // Xuất kết quả phép toán cộng
-                PhanSo tong = ps111111.Tru(ps222222);
-                Console.Write("Hiệu hai phân số:");
-                tong.InPhanSo();
+                PhanSo ps = new PhanSo();
+                ps.tuso = ps1.tuso * BCNN(ps1.mauso, ps2.mauso) / ps1.mauso + ps2.tuso * BCNN(ps1.mauso, ps2.mauso) / ps2.mauso;
+                ps.mauso = BCNN(ps1.mauso, ps2.mauso);
+                return ps;
             }
-            public PhanSo Nhan(PhanSo ps2)
+            public static PhanSo tru(PhanSo ps1, PhanSo ps2)
             {
-                int newTuso = this.tuso * ps2.tuso;
-                int newMauso = this.mauso * ps2.mauso;
-                PhanSo ketQua = new PhanSo(newTuso, newMauso);
-                ketQua.RutGonPhanSo();
-                return ketQua;
+                PhanSo ps = new PhanSo();
+                ps.tuso = ps1.tuso * BCNN(ps1.mauso, ps2.mauso) / ps1.mauso - ps2.tuso * BCNN(ps1.mauso, ps2.mauso) / ps2.mauso;
+                ps.mauso = BCNN(ps1.mauso, ps2.mauso);
+                return ps;
             }
-            public static void hienthinhan()
+            public static PhanSo nhan(PhanSo ps1, PhanSo ps2)
             {
-                PhanSo ps1111111 = new PhanSo(tuso1, mauso1);
-                PhanSo ps2222222 = new PhanSo(tuso2, mauso2);
-                // Xuất kết quả phép toán cộng
-                PhanSo tong = ps1111111.Nhan(ps2222222);
-                Console.Write("Tích hai phân số:");
-                tong.InPhanSo();
+                PhanSo ps = new PhanSo();
+                ps.tuso = ps1.tuso * ps2.tuso;
+                ps.mauso = BCNN(ps1.mauso, ps2.mauso);
+                return ps;
             }
-            public PhanSo Chia(PhanSo ps2)
+            public static PhanSo chia(PhanSo ps1, PhanSo ps2)
             {
-                int newTuso = this.tuso * ps2.mauso;
-                int newMauso = this.mauso * ps2.tuso;
-                PhanSo ketQua = new PhanSo(newTuso, newMauso);
-                ketQua.RutGonPhanSo();
-                return ketQua;
-            }
-            public static void hienthichia()
-            {
-                PhanSo ps11111111 = new PhanSo(tuso1, mauso1);
-                PhanSo ps22222222 = new PhanSo(tuso2, mauso2);
-                // Xuất kết quả phép toán cộng
-                PhanSo tong = ps11111111.Chia(ps22222222);
-                Console.Write("Thương hai phân số:");
-                tong.InPhanSo();
+                PhanSo ps = new PhanSo();
+                ps.tuso = ps1.tuso * ps2.mauso;
+                ps.mauso = BCNN(ps1.mauso, ps2.mauso);
+                return ps;
             }
         }
      }
 }
+
