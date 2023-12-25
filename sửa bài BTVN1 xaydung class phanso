@@ -41,9 +41,9 @@ namespace BTVN1_xd_lop_phanso
                          break;
                      case 2:
                         Console.WriteLine("\n");
-                        Console.Write("Phân số thứ nhất:  ");
+                        Console.Write("Phân số thứ nhất bạn vừa nhập vào là:  ");
                             pst1.InPhanSo(); 
-                        Console.Write("Phân số thứ hai:  ");
+                        Console.Write("Phân số thứ hai bạn vừa nhập vào là:  ");
                             pst2.InPhanSo();
                          Console.WriteLine("\n");
                          break;
@@ -198,9 +198,9 @@ namespace BTVN1_xd_lop_phanso
             {
                 int c, d;
                 if (Ps1.mauso % UCLN(Ps1.tuso,Ps1.mauso) == 0)
-                {
+                { 
                     c = Ps1.mauso / UCLN(Ps1.tuso, Ps1.mauso);
-                   // c = Math.Abs(c);
+                    c =Math.Abs(c);
                 }
                 else
                 {
@@ -209,14 +209,14 @@ namespace BTVN1_xd_lop_phanso
                 if (Ps2.mauso % UCLN(Ps2.tuso, Ps2.mauso) == 0)
                 {
                     d = Ps2.mauso / UCLN(Ps2.tuso, Ps2.mauso);
-                   // d = Math.Abs(d);
                 }
                 else
                 {
                     d = Ps2.mauso;
                 }
+                c = Math.Abs(c);
+                d = Math.Abs(d);
                 Console.WriteLine("BCNN của 2 phân số là: " + BCNN(c,d));
-
             }
             public static PhanSo RutGon(PhanSo ps)
             {
@@ -275,14 +275,14 @@ namespace BTVN1_xd_lop_phanso
             {
                 PhanSo ps = new PhanSo();
                 ps.tuso = ps1.tuso * ps2.tuso;
-                ps.mauso = BCNN(ps1.mauso, ps2.mauso);
+                ps.mauso = ps1.mauso * ps2.mauso;
                 return ps;
             }
             public static PhanSo chia(PhanSo ps1, PhanSo ps2)
             {
                 PhanSo ps = new PhanSo();
                 ps.tuso = ps1.tuso * ps2.mauso;
-                ps.mauso = BCNN(ps1.mauso, ps2.mauso);
+                ps.mauso = ps1.mauso * ps2.tuso;
                 return ps;
             }
         }
