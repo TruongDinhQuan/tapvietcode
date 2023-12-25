@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace baitapvonglap_bai_5_OOP
         {
             char traloi;
             int a, b;
+            int UCLN=0;
             Console.OutputEncoding = System.Text.Encoding.Unicode;
             Console.WriteLine("Chương trình tìm ước chung lớn nhất của m và n \n");
 
@@ -21,61 +23,38 @@ namespace baitapvonglap_bai_5_OOP
                     do
                     {
                         Console.Write("nhập m: ");
-                        a = int.Parse(Console.ReadLine());
-                        if (a < 0)
-                        {
-                            Console.WriteLine("nhập sai!");
-                        }    
+                        a = int.Parse(Console.ReadLine());   
                     }while (a < 0);
                     Console.WriteLine();
                     do
                     {
                         Console.Write("nhập n: ");
                         b = int.Parse(Console.ReadLine());
-                        if (b < 0)
-                        {
-                            Console.WriteLine("nhập sai!");
-                        }
                     } while (b < 0);
 
-                while (a != 0) 
+                while (true) 
                 {
-                    if (a > b)
+                    if (a>b)
                     {
-                        if (a == 1)
+                        a = a % b;
+                        if (a == 0)
                         {
-                            break;
-                        }   
-                        else
-                        {
-                            a = a % b;
-                        }                      
-                    }
-                    else if (a == b)
-                    {
-                        break;
-                    }
-                    else if (a < b)
-                    {
-                        if (b == 1)
-                        {
+                            UCLN = b;
+                            Console.WriteLine("UCLn: " + UCLN);
                             break;
                         }
-                        else
-                        {
-                            b = b % a;
-                        }
+                    }  
+                    else 
+                    {
+                        b = b % a;
+                         if (b == 0)
+                         {
+                            UCLN = a;
+                            Console.WriteLine("UCLn: " + UCLN);
+                            break;
+                         }
                     }
-                } 
-                    if (a == 1 || b == 1)
-                    {
-                        Console.WriteLine("ước chung lớn nhất (UCLN): 1");
-                    }   
-                    else
-                    {
-                        Console.WriteLine("ước chung lớn nhất (UCLN): {0}", b);
-                    }    
-
+                }
                 Console.Write("bạn có muốn tiếp tục chạy chương trình nữa không (y/n): ");
                 traloi = char.Parse(Console.ReadLine());
                 if (traloi != 'y')
