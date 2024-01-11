@@ -1,0 +1,378 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace baitapxaydunghinhkhoi
+{
+    /*internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+        }
+    }*/
+    /*class software
+    {
+        private int m_z;// chỉ truy cập trong hàm ni thôi
+        public int m_v;
+        protected int m_x;
+        public software()
+        {
+            m_x = 100;
+        }
+        public software(int y)
+        {
+            m_x = y;
+        }
+        class MicrosoftSoftware : software
+        {
+            public MicrosoftSoftware()
+            {
+                Console.WriteLine(m_x);
+            }
+        }
+        class IBMSoftware : software
+        {
+            public IBMSoftware(int y) : base(y)
+            {
+                Console.WriteLine(m_x);
+            }
+            public IBMSoftware(string s, int f) : this(f)
+            {
+                Console.WriteLine(s);
+            }
+        }
+        static void Main(string[] args)
+        {
+            MicrosoftSoftware objMS = new MicrosoftSoftware();
+            IBMSoftware objIBM1 = new IBMSoftware(50);
+            IBMSoftware objIBM2 = new IBMSoftware("test", 75);
+            Console.ReadLine();
+            Console.ReadKey();
+        }
+    }*/
+    /* class animal
+     {
+         public animal()
+         {
+             Console.WriteLine("animal constructor");
+         }
+         public virtual void Talk()
+         {
+             Console.WriteLine("animal talk");
+         }
+     }
+     class Dog : animal
+     {
+         public Dog()
+         {
+             Console.WriteLine("Dog construction");
+         }
+         public override void Talk()
+         {
+             Console.WriteLine("dog talk");
+         }
+     }
+     class Test
+     {
+         static void Main(string[] args)
+         {
+             animal objA = new animal();
+             Dog objD = new Dog();
+             objA = objD;
+             objA.Talk();
+             Console.ReadKey();
+         }
+     }*/
+     class hinhkhoi
+     {
+        protected double canhthunhat;
+        public virtual void nhap()
+        {
+            do
+            {
+                Console.Write("nhập độ dài của cạnh thứ nhất: ");
+                canhthunhat = double.Parse(Console.ReadLine());
+            } while (canhthunhat <= 0);
+        }
+        public virtual double chuvi()// lớp ảo 
+        {
+            return 0;
+        }    
+        public virtual double dientich()// lớp ảo
+        {
+            return 0;
+        }    
+     }
+    class hinhvuong : hinhkhoi 
+    {
+        public double canhA;
+        public override void nhap()
+        {
+            do
+            {
+                Console.Write("nhập độ dài của cạnh thứ 1: ");
+                canhA = double.Parse(Console.ReadLine());
+            } while (canhA <= 0);
+        }
+        public override double chuvi() 
+        {
+            return canhA * 4;
+        }
+        public override double dientich()
+        {
+            return Math.Pow(canhA, 2);
+        }
+    }
+    class hinhchunhat : hinhkhoi
+    {
+        public double canhA;
+        public double canhB;
+        public override void nhap()
+        {
+            do
+            {
+                Console.Write("nhập độ dài chiều dài: ");
+                canhA = double.Parse(Console.ReadLine());
+            } while (canhA <= 0);
+            do
+            {
+                Console.Write("nhập độ dài chiều rộng: ");
+                canhB = double.Parse(Console.ReadLine());
+            }while (canhB <= 0);
+        }
+        public override double chuvi() 
+        {
+            return 2 * (canhA + canhB);
+        }
+        public override double dientich()
+        {
+            return canhA * canhB;
+        }
+    }
+    class hinhtamgiac : hinhkhoi
+    {
+        public double canhA;
+        public double canhB;
+        public double canhC;
+        public override void nhap()
+        {
+                do
+                {
+                    Console.Write("Nhập độ dài cạnh 1: ");
+                    canhA = double.Parse(Console.ReadLine());
+                } while (canhA <= 0);
+
+                do
+                {
+                    Console.Write("Nhập độ dài cạnh 2: ");
+                    canhB = double.Parse(Console.ReadLine());
+                } while (canhB <= 0);
+
+                do
+                {
+                    Console.Write("Nhập độ dài cạnh 3: ");
+                    canhC = double.Parse(Console.ReadLine());
+                } while (canhC <= 0);
+        }
+       public int LaTamGiac() // Kiểm tra có phải là tam giác hợp lệ
+        {
+            if ((canhA + canhB > canhC) && (canhA + canhC > canhB) && (canhB + canhC > canhA))
+            {
+                Console.WriteLine("-----> là tam giác!");
+                return 1;
+            }
+            else
+            {
+                Console.WriteLine("---> không phải là tam giác. Vì không thỏa điều kiện ({0} + {1} > {2}) && ({0} + {2} > {1}) && ({1} + {2} > {0})", canhA, canhB, canhC);
+                Console.WriteLine("");
+                return 0;
+            }
+       }
+        public override double chuvi()
+        {
+            return canhA + canhB + canhC;
+        }
+        public override double dientich()
+        {   
+            double P = chuvi() / 2;
+            return Math.Sqrt(P * (P - canhA) * (P - canhB) * (P - canhC));
+        }
+    }
+    class hinhtron : hinhkhoi
+    {
+        public double bankinh;
+        public override void nhap()
+        {
+            do
+            {
+                Console.Write("nhập độ dài bán kính: ");
+                bankinh = double.Parse(Console.ReadLine());
+            } while (bankinh <= 0);
+        }
+        public override double chuvi()
+        {
+            return 2 * bankinh * Math.PI;
+        }
+        public override double dientich()
+        {
+            return  Math.PI * Math.Pow(bankinh,2);
+        }
+    }
+    class hinhthang : hinhkhoi
+    {
+        public double canhben1;
+        public double canhben2;
+        public double canhdaynho;
+        public double canhdaylon;
+        public double chieucao;
+        public override void nhap()
+        {
+
+            do
+            {
+                Console.Write("nhập độ dài cạnh bên 1: ");
+                canhben1 = double.Parse(Console.ReadLine());
+            } while (canhben1 <= 0);
+            do
+            {
+                Console.Write("nhập độ dài cạnh bên 2 : ");
+                canhben2 = double.Parse(Console.ReadLine());
+            } while (canhben2 <= 0);
+            do
+            {
+                Console.Write("nhập độ dài chiều cao: ");
+                chieucao = double.Parse(Console.ReadLine());
+            } while (chieucao <= 0);
+                do
+                {
+                    Console.Write("nhập độ dài cạnh đáy nhỏ: ");
+                    canhdaynho = double.Parse(Console.ReadLine());
+                } while (canhdaynho <= 0);
+                do
+                {
+                    Console.Write("nhập độ dài cạnh đáy lớn: ");
+                    canhdaylon = double.Parse(Console.ReadLine());
+                } while (canhdaylon <= 0);
+        }
+        public override double chuvi()
+        {
+            return canhben1 + canhben2 + canhdaynho + canhdaylon;
+        }
+        public override double dientich()
+        {
+            return ((canhdaylon + canhdaynho) *chieucao) / 2;
+        }
+    }
+    class menuu
+    { 
+        public static void menu()
+        {
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.WriteLine("chương trình tính chu vi, diện tích của hình khối");
+            Console.WriteLine("-------------------------------------------------");
+            Console.WriteLine("1. Hình vuông------------------------------------");
+            Console.WriteLine("2. Hình chữ nhật---------------------------------");
+            Console.WriteLine("3. Hình tam giác---------------------------------");
+            Console.WriteLine("4. Hình tròn-------------------------------------");
+            Console.WriteLine("5. Hình thang------------------------------------");
+            Console.WriteLine("6. Thoát chương trình----------------------------");
+            Console.WriteLine("---------------------Hết-------------------------");
+            Console.Write("Mời bạn hình mà bạn muốn thực hiện: ");
+        }
+    }
+
+    internal class Program
+    {
+        static int luachon()
+        {
+            menuu.menu();
+            int LC = int.Parse(Console.ReadLine());
+            return LC;
+        }
+        static int LC;
+        static void Main(string[] args)
+        {
+
+            do
+            {
+                LC = luachon();
+                switch (LC)
+                {
+                    case 1:
+                        Console.WriteLine();
+                        Console.WriteLine("---> bạn chọn hình vuông để thực hiện toán");
+                        hinhvuong vuong = new hinhvuong();
+                        vuong.nhap();
+                        double chuvi = vuong.chuvi();
+                        Console.WriteLine("Chu vi là: " + chuvi);
+                        double dientich = vuong.dientich();
+                        Console.Write("Diện tích là: {0}\n",dientich);
+                        Console.WriteLine();
+                        break;
+                    case 2:
+                        Console.WriteLine();
+                        Console.WriteLine("---> bạn chọn hình chữ nhật để thực hiện toán");
+                        hinhchunhat chunhat = new hinhchunhat();
+                        chunhat.nhap();
+                        double chuvihinhchunhat = chunhat.chuvi();
+                        Console.WriteLine("Chu vi là: " + chuvihinhchunhat);
+                        double dientichhcn = chunhat.dientich();
+                        Console.WriteLine("Diện tích là: {0}\n", dientichhcn);
+                        Console.WriteLine();
+                        break;
+                    case 3:
+                        Console.WriteLine();
+                        Console.WriteLine("---> bạn chọn hình tam giác để thực hiện toán");
+                        hinhtamgiac tamgiac = new hinhtamgiac();
+                        bool logic = false;
+                        do
+                        {
+                            tamgiac.nhap();
+                            if (tamgiac.LaTamGiac() == 1)
+                            {
+                                double chuvitamgiac = tamgiac.chuvi();
+                                Console.WriteLine("Chu vi là: " + chuvitamgiac);
+                                double dientichtamgiac = tamgiac.dientich();
+                                Console.WriteLine("Diện tích là: {0}\n", dientichtamgiac);
+                                Console.WriteLine();
+                                break;
+                            }
+                        } while (!logic);
+                        break;
+                    case 4:
+                        Console.WriteLine();
+                        Console.WriteLine("---> bạn chọn hình tròn để thực hiện toán");
+                        hinhtron tron = new hinhtron();
+                        tron.nhap();
+                        double chuvitron = tron.chuvi();
+                        Console.WriteLine("Chu vi là: " + chuvitron);
+                        double dientichtron = tron.dientich();
+                        Console.WriteLine("Diện tích là: {0}\n", dientichtron);
+                        Console.WriteLine();
+                        break;
+                    case 5:
+                        Console.WriteLine();
+                        Console.WriteLine("---> bạn chọn hình thang để thực hiện toán");
+                        hinhthang thang = new hinhthang();
+                        thang.nhap();
+                        double chuvithang = thang.chuvi();
+                        Console.WriteLine("Chu vi là: " + chuvithang);
+                        double dientichthang = thang.dientich();
+                        Console.WriteLine("Diện tích là: {0}\n", dientichthang);
+                        Console.WriteLine();
+                        break;
+                    case 6:
+                        Environment.Exit(0);
+                        break;
+                }
+            } while (LC != 0);
+            Console.ReadKey();
+        }
+    }
+}
