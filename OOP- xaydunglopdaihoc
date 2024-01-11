@@ -1,0 +1,220 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP_3_xaydungclassdaihoc
+{
+    internal class Program
+    {
+        static void menu()
+        {
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.WriteLine("Chương trình quản lý danh sách sinh viên:         ");
+            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine("1. Nhập vào danh sách sinh viên-------------------");
+            Console.WriteLine("2. xuất danh sách vừa nhập------------------------");
+            Console.WriteLine("3. Số lượng sinh viên đủ điều kiện tốt nghiệp-----");
+            Console.WriteLine("4. Sinh viên đại học có điểm trung bình cao nhất--");
+            Console.WriteLine("5. Kết thúc chương trình--------------------------");
+            Console.WriteLine("----------------------Hết-------------------------");
+            Console.Write("Mời bạn chọn thao tác:");
+        }
+        static int luachon()
+        {
+            menu();
+            int LC = int.Parse(Console.ReadLine());
+            return LC;
+        }
+        static int LC;
+        static void Main(string[] args)
+        {
+            SinhVienCaoDang[] caodang = new SinhVienCaoDang[50];
+            SinhVienDaiHoc[] daihoc = new SinhVienDaiHoc[50];
+            int slcd = 0, sldh = 0;
+            do
+            {
+                LC = luachon();
+                switch ( LC )
+                {
+                    case 1:
+                        Console.Write("Nhập số lượng sinh viên cao đẳng: ");
+                        slcd = int.Parse(Console.ReadLine());
+                        for (int i = 0; i < slcd; i++)
+                        {
+                            Console.WriteLine($"Nhập thông tin sinh viên cao đẳng {i+1}: ");
+                            caodang[i] = new SinhVienCaoDang();
+                            caodang[i].Nhap();
+                        }
+                        Console.WriteLine();
+                        Console.Write("Nhập số lượng sinh viên đại học: ");
+                        sldh = int.Parse(Console.ReadLine());
+                        for (int j = 0; j < sldh; j++)
+                        {
+                            Console.WriteLine($"Nhập thông tin sinh viên đại học {j + 1}: ");
+                            daihoc[j] = new SinhVienDaiHoc();
+                            daihoc[j].Nhap();
+                        }    
+                        Console.WriteLine("\n");
+                        break;
+                    case 2:
+                        Console.WriteLine("Danh sách sinh viên bạn vừa nhập là: ");
+                        Console.WriteLine("|{0,-10}|{1,-15}|{2,-10}|{3,-15}|{4,-10}|{5,-20}|", "Mã sinh viên", "Họ tên", "Địa chỉ", "Tổng số tín chỉ", "Điểm TB", "Điểm thi tốt nghiệp");
+                        for (int i = 0;i < slcd; i++)
+                        {
+                            caodang[i].xuat();
+                            Console.WriteLine();
+                        }
+                        Console.WriteLine("|{0,-10}|{1,-15}|{2,-10}|{3,-15}|{4,-10}|{5,-20}|{6,-15}|", "Mã sinh viên", "Họ tên", "Địa chỉ", "Tổng số tín chỉ", "Điểm TB", "Tên luận văn", "Điểm luận văn");
+                        for (int j = 0;j< sldh; j++)
+                        {
+                            daihoc[j].xuat();
+                            Console.WriteLine();
+                        }    
+                        Console.WriteLine("\n");
+                        break;
+                    case 3:
+                        int dem = 0;
+                        for (int i = 0; i < slcd; i++)
+                        {
+                            if (caodang[i].kiemtratotnghiep() == true)
+                            {
+                                dem++;
+                                Console.WriteLine("|{0,-10}|{1,-15}|{2,-10}|{3,-15}|{4,-10}|{5,-20}|", "Mã sinh viên", "Họ tên", "Địa chỉ", "Tổng số tín chỉ", "Điểm TB", "Điểm thi tốt nghiệp");
+                                caodang[i].xuat();
+                                Console.WriteLine();
+                            }    
+                        }
+                        for (int j = 0; j < sldh; j++)
+                        {
+                            if (daihoc[j].kiemtratotnghiep() == true)
+                            {
+                                dem++;
+                                Console.WriteLine("|{0,-10}|{1,-15}|{2,-10}|{3,-15}|{4,-10}|{5,-20}|{6,-15}|", "Mã sinh viên", "Họ tên", "Địa chỉ", "Tổng số tín chỉ", "Điểm TB", "Tên luận văn", "Điểm luận văn");
+                                daihoc[j].xuat();
+                                Console.WriteLine();
+                            }    
+                        }
+                        Console.WriteLine("số lượng sinh viên tốt nghiệp là: {0}", dem);
+
+                        Console.WriteLine("\n");
+                        break; 
+                    case 4:
+                        double Max = 0;
+                        for (int j = 0; j < sldh; j++)
+                        {
+                            if (daihoc[j].DTB >= Max)
+                            {
+                                Max = daihoc[j].DTB;
+                            }
+                        }
+                        Console.WriteLine(Max);
+                        Console.WriteLine("|{0,-10}|{1,-15}|{2,-10}|{3,-15}|{4,-10}|{5,-20}|{6,-15}|", "Mã sinh viên", "Họ tên", "Địa chỉ", "Tổng số tín chỉ", "Điểm TB", "Tên luận văn", "Điểm luận văn");
+                        for (int j = 0; j < daihoc.Length; j++)
+                        {
+                            if (daihoc[j] != null && daihoc[j].DTB == Max)
+                            {
+                                daihoc[j].xuat();
+                                Console.WriteLine();
+                            }
+                            else
+                                continue;
+                        }
+                        Console.WriteLine("\n");
+                        break; 
+                    case 5:
+                        Environment.Exit(0);
+                        break;
+                }
+            } while (LC != 0);
+            Console.ReadKey();
+        }
+    }
+    abstract class SinhVien
+    {
+        protected string MSV;
+        protected string hoten;
+        protected string diachi;
+        protected int tongsotinchi;
+        public double DTB;
+        public virtual void Nhap() 
+        {
+            Console.Write("Nhập mã số sinh viên: ");
+            MSV = Console.ReadLine();
+            Console.Write("Nhập họ tên sinh viên: ");
+            hoten = Console.ReadLine();
+            Console.Write("Nhập địa chỉ của sinh viên: ");
+            diachi = Console.ReadLine();
+            do
+            {
+                Console.Write("Nhập số tổng số tín chỉ: ");
+                tongsotinchi = int.Parse(Console.ReadLine());
+            }while (tongsotinchi < 1);
+            do
+            {
+                Console.Write("Nhập điểm trung bình: ");
+                DTB = double.Parse(Console.ReadLine());
+            } while (DTB < 0 || DTB > 10);
+        }
+        public virtual void xuat()
+        {
+            Console.Write("|{0,-10}|{1,-15}|{2,-10}|{3,15}|{4,10}|", MSV,hoten,diachi,tongsotinchi,DTB);
+        }
+        public abstract bool kiemtratotnghiep();
+    }
+    class SinhVienCaoDang : SinhVien
+    {
+        private double diemthitotnghiep;
+        public override void Nhap()
+        {
+            base.Nhap();
+            do
+            {
+                Console.Write("Nhập điểm thi tốt nghiệp: ");
+                diemthitotnghiep = double.Parse(Console.ReadLine());
+            } while (diemthitotnghiep <0 || diemthitotnghiep > 10);
+        }
+        public override void xuat()
+        {
+            base.xuat();
+            Console.Write("{0,20}|",diemthitotnghiep);
+        }
+        public override bool kiemtratotnghiep()
+        {
+            if (tongsotinchi >= 120 && DTB >= 5 && diemthitotnghiep >= 5)
+                return true;
+            else
+                return false;
+        }
+    }
+    class SinhVienDaiHoc : SinhVien
+    {
+        private string tenluanvan;
+        private float diemluanvan;
+        public override void Nhap()
+        {
+            base.Nhap();
+            Console.Write("Nhập tên luận văn: ");
+            tenluanvan = Console.ReadLine();
+            do
+            {
+                Console.Write("Nhập điểm luận văn: ");
+                diemluanvan = float.Parse(Console.ReadLine());
+            } while (diemluanvan < 0 || diemluanvan > 10);
+        }
+        public override void xuat()
+        {
+            base.xuat();
+            Console.Write("{0,-20}|{1,15}|", tenluanvan,diemluanvan);
+        }
+        public override bool kiemtratotnghiep()
+        {
+            if (tongsotinchi >= 170 && DTB >= 5 && diemluanvan >= 5)
+                return true; 
+            else
+                return false;
+        }
+    }
+}
